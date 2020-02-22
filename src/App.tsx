@@ -6,12 +6,12 @@ import * as Colors from '@pxblue/colors';
 import { Feedback } from '@material-ui/icons';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const ellipseBackgroundImage = require('./assets/bg.png');
-const angularImage = require('./assets/angular-ionic-logo.svg');
-const reactImage = require('./assets/react-logo.svg');
-const reactNativeImage = require('./assets/react-native-logo.png');
-const titleImage = require('./assets/title.svg');
-const titleImageSM = require('./assets/titleSM.svg');
+import ellipseBackgroundImage from './assets/bg.png';
+import angularImage from './assets/angular-ionic-logo.svg';
+import reactImage from './assets/react-logo.svg';
+import reactNativeImage from './assets/react-native-logo.png';
+import titleImage from './assets/title.svg';
+import titleImageSM from './assets/titleSM.svg';
 
 const cardShift = -100;
 
@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(2),
             color: Colors.white[50],
             flexShrink: 0,
+            textAlign: 'center',
         },
         FAB: {
             position: 'fixed',
@@ -92,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function App() {
+function App(): JSX.Element {
     const theme = useTheme();
     const classes = useStyles(theme);
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));

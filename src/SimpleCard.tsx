@@ -57,6 +57,8 @@ type SimpleCardProps = {
     version?: string;
 };
 
+// return the #.#.# version number as a promise
+// return empty string if unsuccessful
 function fetchNpmVersion(packageName: string): Promise<string> {
     return fetch(`https://api.npms.io/v2/package/${encodeURIComponent(packageName)}`)
         .then((res) => res.json())
@@ -64,23 +66,20 @@ function fetchNpmVersion(packageName: string): Promise<string> {
             let version = '-.-.-';
             try {
                 version = json.collected.metadata.version;
-            } catch (e) {
-            } finally {
-                return version;
+            } catch (err) {
+                version = '';
             }
+            return version;
         });
 }
 
-export function SimpleCard(props: SimpleCardProps) : JSX.Element {
+export function SimpleCard(props: SimpleCardProps): JSX.Element {
     const { title, body, packageName, image, url } = props;
     const theme = useTheme();
     const classes = useStyles(theme);
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [version, setVersion] = useState('-.-.-');
-    fetchNpmVersion(packageName)
-        .then(
-            (_version) => setVersion(_version)
-        );
+    fetchNpmVersion(packageName).then((_version) => setVersion(_version));
     return (
         <a className={classes.wrapper} href={url} style={matchesSM ? { width: 'auto', maxWidth: 600 } : undefined}>
             <div className={classes.image} style={{ backgroundImage: `url("${image}")` }} />
@@ -92,12 +91,12 @@ export function SimpleCard(props: SimpleCardProps) : JSX.Element {
                 {body}
             </Typography>
             <div style={{ flex: '1 1 0' }} />
-            <Typography className={classes.footer} variant={'subtitle2'}  noWrap={true}>
+            <Typography className={classes.footer} variant={'subtitle2'} noWrap={true}>
                 {packageName}
             </Typography>
-            <Typography className={classes.footer} variant={'subtitle2'}>
+            {version && <Typography className={classes.footer} variant={'subtitle2'}>
                 v{version}
-            </Typography>
+            </Typography>}
             <Button style={{ fontWeight: 600, marginTop: 8 }} color="primary">
                 Check API
             </Button>
