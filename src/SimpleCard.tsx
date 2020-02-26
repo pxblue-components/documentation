@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Typography, Button, Card, CardContent } from '@material-ui/core';
 import * as Colors from '@pxblue/colors';
 import ShortlineDivider from './ShortlineDivider';
-
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -15,10 +14,9 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             textAlign: 'center',
             '&:hover': {
-                boxShadow: theme.shadows[20],
+                boxShadow: theme.shadows[12],
                 transition: 'ease-in-out 200ms',
             },
-            
         },
         image: {
             backgroundSize: 'contain',
@@ -70,21 +68,26 @@ export function SimpleCard(props: SimpleCardProps): JSX.Element {
     const theme = useTheme();
     const classes = useStyles(theme);
     const [version, setVersion] = useState('-.-.-');
-    fetchNpmVersion(packageName).then((_version) => setVersion(_version));
+    useEffect(() => {
+        fetchNpmVersion(packageName).then((_version) => setVersion(_version));
+    });
     return (
-        <Card raised={true} className={classes.wrapper}>
+        <Card className={classes.wrapper}>
             <CardContent>
                 <div className={classes.image} style={{ backgroundImage: `url("${image}")` }} />
-                <Typography variant={'h5'}>
-                    {title}
-                </Typography>
+                <Typography variant={'h5'}>{title}</Typography>
                 <ShortlineDivider />
                 <Typography className={classes.body} variant={'body1'}>
                     {body}
                 </Typography>
                 <div style={{ flex: '1 1 0' }} />
                 <div>
-                    <Button style={{ fontWeight: 600, marginTop: theme.spacing(3) }} color="primary" variant="outlined" href={url}>
+                    <Button
+                        style={{ fontWeight: 600, marginTop: theme.spacing(3) }}
+                        color="primary"
+                        variant="outlined"
+                        href={url}
+                    >
                         View API
                     </Button>
                 </div>
