@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { Typography, Button } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Typography, Button, Card, CardContent } from '@material-ui/core';
+import * as Colors from '@pxblue/colors';
+import ShortlineDivider from './ShortlineDivider';
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         wrapper: {
-            backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
-            padding: theme.spacing(3),
-            borderRadius: theme.spacing(0.5),
-            boxShadow: theme.shadows[3],
-            width: 300,
+            width: 304,
             margin: theme.spacing(1),
             display: 'flex',
             flexDirection: 'column',
+            textAlign: 'center',
             '&:hover': {
-                boxShadow: theme.shadows[12],
-                transition: 'ease-in-out 300ms',
+                boxShadow: theme.shadows[20],
+                transition: 'ease-in-out 200ms',
             },
-            textDecoration: 'none',
+            
         },
         image: {
             backgroundSize: 'contain',
@@ -28,22 +27,15 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundPositionX: 'center',
             marginBottom: theme.spacing(2),
         },
-        title: {
-            textAlign: 'center',
-        },
-        divider: {
-            backgroundColor: theme.palette.primary.main,
-            height: 2,
-            width: theme.spacing(5),
-            margin: `${theme.spacing(2)}px auto`,
-        },
         body: {
-            marginBottom: theme.spacing(2),
+            color: Colors.gray[500],
+            fontSize: 14, // Kyle's recommendation
         },
         footer: {
-            textAlign: 'center',
-            color: theme.palette.text.hint,
+            color: Colors.gray[300],
             fontWeight: 600,
+            marginTop: theme.spacing(3),
+            fontSize: 12, // Kyle's recommendation
         },
     })
 );
@@ -77,29 +69,29 @@ export function SimpleCard(props: SimpleCardProps): JSX.Element {
     const { title, body, packageName, image, url } = props;
     const theme = useTheme();
     const classes = useStyles(theme);
-    const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [version, setVersion] = useState('-.-.-');
     fetchNpmVersion(packageName).then((_version) => setVersion(_version));
     return (
-        <a className={classes.wrapper} href={url} style={matchesSM ? { width: 'auto', maxWidth: 600 } : undefined}>
-            <div className={classes.image} style={{ backgroundImage: `url("${image}")` }} />
-            <Typography className={classes.title} variant={'h5'}>
-                {title}
-            </Typography>
-            <div className={classes.divider} />
-            <Typography className={classes.body} variant={'body1'}>
-                {body}
-            </Typography>
-            <div style={{ flex: '1 1 0' }} />
-            <Typography className={classes.footer} variant={'subtitle2'} noWrap={true}>
-                {packageName}
-            </Typography>
-            {version && <Typography className={classes.footer} variant={'subtitle2'}>
-                v{version}
-            </Typography>}
-            <Button style={{ fontWeight: 600, marginTop: 8 }} color="primary">
-                Check API
-            </Button>
-        </a>
+        <Card raised={true} className={classes.wrapper}>
+            <CardContent>
+                <div className={classes.image} style={{ backgroundImage: `url("${image}")` }} />
+                <Typography variant={'h5'}>
+                    {title}
+                </Typography>
+                <ShortlineDivider />
+                <Typography className={classes.body} variant={'body1'}>
+                    {body}
+                </Typography>
+                <div style={{ flex: '1 1 0' }} />
+                <div>
+                    <Button style={{ fontWeight: 600, marginTop: theme.spacing(3) }} color="primary" variant="outlined" href={url}>
+                        View API
+                    </Button>
+                </div>
+                <Typography className={classes.footer} variant={'subtitle2'} noWrap={true}>
+                    {packageName} - {version && <span>v{version}</span>}
+                </Typography>
+            </CardContent>
+        </Card>
     );
 }

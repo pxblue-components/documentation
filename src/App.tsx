@@ -1,5 +1,6 @@
 import React from 'react';
 import { SimpleCard } from './SimpleCard';
+import ShortlineDivider from './ShortlineDivider'
 import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Typography, Button, Fab } from '@material-ui/core';
 import * as Colors from '@pxblue/colors';
@@ -9,11 +10,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ellipseBackgroundImage from './assets/bg.png';
 import angularImage from './assets/angular-ionic-logo.svg';
 import reactImage from './assets/react-logo.svg';
-import reactNativeImage from './assets/react-native-logo.png';
 import titleImage from './assets/title.svg';
 import titleImageSM from './assets/titleSM.svg';
 
-const cardShift = -100;
+const cardShift = -150;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             height: '100vh',
-        },
-        content: {
-            flex: '1',
         },
         ellipseBackground: {
             background: `url(${ellipseBackgroundImage}) ${theme.palette.primary.main}`,
@@ -38,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'relative',
             top: cardShift,
             display: 'flex',
+            width: '100%',
+            '&.matchesSM' : { flexWrap: 'wrap', justifyContent: 'unset', maxWidth: 640 },
+            '&.matchesXS' : { justifyContent: 'center', }
         },
         title: {
             backgroundImage: `url("${titleImage}")`,
@@ -45,17 +45,16 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             position: 'absolute',
-            top: theme.spacing(4),
+            top: theme.spacing(2),
             left: '50%',
             transform: 'translateX(-50%)',
-            maxWidth: 500,
-            width: '90%',
-            height: 120,
+            width: 500,
+            height: 64,
         },
         section: {
-            backgroundColor: theme.palette.background.default,
             padding: `${theme.spacing(3)}px 0`,
             marginTop: cardShift + theme.spacing(2),
+            textAlign: 'center',
         },
         sectionContentContainer: {
             maxWidth: 600,
@@ -63,16 +62,14 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(1),
         },
         sectionTitle: {
-            textAlign: 'center',
             marginBottom: theme.spacing(1),
-            fontWeight: 'bold',
         },
         sectionButtonContainer: {
             display: 'flex',
             justifyContent: 'center',
         },
         sectionButton: {
-            margin: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
+            margin: `${theme.spacing(4)}px ${theme.spacing(1)}px`,
         },
         sectionButtonXS: {
             margin: `${theme.spacing(1)}px 0`,
@@ -98,17 +95,17 @@ function App(): JSX.Element {
     const classes = useStyles(theme);
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+    const matches640Down = useMediaQuery('(max-width:640px)');
     return (
         <div className={classes.root}>
-            <div className={classes.content}>
+            <div style={{flex: '1'}}>
                 <div className={classes.ellipseBackground} />
                 <div
                     className={classes.title}
                     style={matchesXS ? { backgroundImage: `url(${titleImageSM})`, width: '70%' } : undefined}
                 />
                 <div
-                    className={classes.SimpleCardContainer}
-                    style={matchesSM ? { flexDirection: 'column', alignItems: 'center' } : undefined}
+                    className={`${classes.SimpleCardContainer} ${matchesSM && 'matchesSM'} ${matches640Down && 'matchesXS'}`}
                 >
                     <SimpleCard
                         image={angularImage}
@@ -129,7 +126,7 @@ function App(): JSX.Element {
                         url={'/react'}
                     />
                     <SimpleCard
-                        image={reactNativeImage}
+                        image={reactImage}
                         title={'React Native'}
                         body={
                             'Our React Native component library can be used for mobile applications built with React Native v0.60+. They include strong type definitions so they will work well in either JavaScript or TypeScript projects.'
@@ -140,13 +137,12 @@ function App(): JSX.Element {
                 </div>
                 <div className={classes.section}>
                     <div className={classes.sectionContentContainer}>
-                        <Typography className={classes.sectionTitle} variant={'h6'}>
+                        <Typography className={classes.sectionTitle} variant={'h4'}>
                             About
                         </Typography>
+                        <ShortlineDivider />
                         <Typography>
-                            Power Xpert Blue is a complete design system for front-end development at Eaton. This system
-                            will help your team build beautiful applications that adhere to our design guidelines while
-                            ensuring flexibility and code reusability.
+                            These component libraries are part of the Power Xpert Blue design system. They simplify development efforts and ensure consistency across products by providing out-of-the-box components implementations for common UI elements. Our documentation uses Storybook to showcase the various ways these components can be configured.
                         </Typography>
                         <div
                             className={classes.sectionButtonContainer}
@@ -156,6 +152,7 @@ function App(): JSX.Element {
                                 className={matchesXS ? classes.sectionButtonXS : classes.sectionButton}
                                 variant="outlined"
                                 color="primary"
+                                href="https://pxblue.github.io"
                             >
                                 release plan
                             </Button>
@@ -163,9 +160,9 @@ function App(): JSX.Element {
                                 className={matchesXS ? classes.sectionButtonXS : classes.sectionButton}
                                 variant="outlined"
                                 color="primary"
-                                href="https://pxblue.github.io/get-started/new-project"
+                                href="https://pxblue.github.io/get-started/new-project" // TODO: change to a valid link
                             >
-                                choose a framework
+                                development roadmap
                             </Button>
                         </div>
                     </div>
