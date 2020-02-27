@@ -1,0 +1,78 @@
+version: 2
+jobs:
+  build_site:
+    docker:
+      - image: circleci/node:12.9.1-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: |
+            yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Cache
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Build Page
+          command: |
+            yarn build
+      - run:
+          name: Lint
+          command: |
+            yarn lint
+      # Save the dist folder for use in future jobs.
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+
+
+  deploy_site:
+    docker:
+      - image: circleci/node:12.9.1-browsers
+    environment:
+      - MASTER_BRANCH: master
+      - MASTER_TARGET: https://github.com/pxblue-components/pxblue-components.github.io
+      - GH_EMAIL: pxblue@eaton.com
+      - GH_NAME: PX Blue Agent
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy Landing Page
+          command: |
+            git config --global user.email "$GH_EMAIL"
+            git config --global user.name "$GH_NAME"
+
+            git clone $MASTER_TARGET out
+
+            cd out
+            git rm -rf .
+
+            cd ..
+
+            cp -a build/. out/.
+            cd out
+
+            git add -A
+            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git push
+
+workflows:
+  version: 2
+  component_docs_landing:
+    jobs:
+      - build_site
+      - deploy_site:
+          requires:
+            - build_site
+          filters:
+            branches:
+              only:
+                - master
