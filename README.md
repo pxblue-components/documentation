@@ -11,6 +11,7 @@ git clone https://github.com/pxblue-components/documentation.git
 cd documentation
 git checkout -b feature/my-feature
 ```
+Then you may run `yarn && yarn start` to start a local server. 
 
 Once you have made your changes, push your feature branch and make a Pull Request into the master branch.
 
