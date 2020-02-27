@@ -155,13 +155,13 @@ function App(): JSX.Element {
                                     color="primary"
                                     href="https://pxblue.github.io"
                                 >
-                                    release plan
+                                    About us
                                 </Button>
                                 <Button
                                     className={matchesXS ? classes.sectionButtonXS : classes.sectionButton}
                                     variant="outlined"
                                     color="primary"
-                                    href="https://pxblue.github.io/get-started/new-project" // TODO: change to a valid link
+                                    href="https://pxblue.github.io" // TODO: change to a valid link
                                 >
                                     development roadmap
                                 </Button>
