@@ -35,7 +35,7 @@ Don't bundle more than one feature or bug fix per pull request.
 
 ```
 git clone https://github.com/<your-user-id>/<repository> -b <branch-name>
-cd to repository
+cd <repository>
 git remote add upstream https://github.com/pxblue/<repository-name>
 ```
 
