@@ -71,8 +71,12 @@ The maintainers of PX Blue will be notified and will review your pull request an
 
 ### How to increase the chance of being accepted?
 
-Circle CI runs a series of checks automatically when a Pull Request is opened. If you're not
-sure if your changes will pass, you should run available scripts located in the package.json or open a Pull Request and the GitHub build details will display a summary of the results.
+Because we will only merge Pull Request for which all tests pass. The following items also need to be checked.
+
+-   If TypeScript declarations were changed, `yarn typescript`.
+-   The code is formatted run `yarn prettier`.
+-   The code is linted `yarn lint`.
+-   The Pull Request title follows the pattern `TO-DO`
 
 Verify the following:
 
@@ -84,24 +88,12 @@ Verify the following:
 -   When adding new features or modifying existing, please include tests to confirm the new behavior.
 -   If props were added or prop types were changed, the TypeScript declarations are updated.
 
-Because we will only merge Pull Request for which all tests pass. The following items also need to be checked.
-
--   If TypeScript declarations were changed, `yarn typescript`.
--   The code is formatted run `yarn prettier`.
--   The code is linted `yarn lint`.
--   If API documentation is being changed `TO-DO`.
--   If demos were changed `TO-DO`
--   The Pull Request title follows the pattern `TO-DO`
-
 ## Contribution Prerequisites
 
--   Node installed at v10.17.0+ and Yarn at v1.17.0+
+-   Node v10.17.0+
+-   Yarn v1.17.0+
 -   Latest PX Blue NPM packages installed.
 -   `TO-DO`
-
-## CircleCI
-
-`TO-DO`
 
 ## How to add a new demo and API info in the documentation?
 
