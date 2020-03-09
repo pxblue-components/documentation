@@ -76,6 +76,8 @@ Because we will only merge Pull Request for which all tests pass. The following 
 -   If TypeScript declarations were changed, `yarn typescript`.
 -   The code is formatted run `yarn prettier`.
 -   The code is linted `yarn lint`.
+-   The code builds `yarn build`.
+-   The code passes tests `yarn test`
 -   The Pull Request title follows the pattern `TO-DO`
 
 Verify the following:
