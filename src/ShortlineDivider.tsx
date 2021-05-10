@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 
-export default function ShortlineDivider(): JSX.Element {
+export const ShortlineDivider: React.FC = () => {
     const theme = useTheme();
 
     return (
@@ -14,4 +14,4 @@ export default function ShortlineDivider(): JSX.Element {
             }}
         />
     );
-}
+};

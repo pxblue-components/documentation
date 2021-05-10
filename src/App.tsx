@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimpleCard } from './SimpleCard';
-import ShortlineDivider from './ShortlineDivider';
+import { ShortlineDivider } from './ShortlineDivider';
 import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Typography, Button, Fab } from '@material-ui/core';
 import * as Colors from '@pxblue/colors';
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function App(): JSX.Element {
+export const App: React.FC = (): JSX.Element => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -102,8 +102,9 @@ function App(): JSX.Element {
                         style={matchesXS ? { backgroundImage: `url(${titleImageSM})`, width: '70%' } : undefined}
                     />
                     <div
-                        className={`${classes.SimpleCardContainer} ${matchesSM && 'matchesSM'} ${matches640Down &&
-                            'matchesXS'}`}
+                        className={`${classes.SimpleCardContainer} ${matchesSM ? 'matchesSM' : ''} ${
+                            matches640Down ? 'matchesXS' : ''
+                        }`}
                     >
                         <SimpleCard
                             image={angularImage}
@@ -155,7 +156,7 @@ function App(): JSX.Element {
                                     color="primary"
                                     href="https://pxblue.github.io"
                                 >
-                                    About us
+                                    About Us
                                 </Button>
                                 <Button
                                     className={matchesXS ? classes.sectionButtonXS : classes.sectionButton}
@@ -163,13 +164,15 @@ function App(): JSX.Element {
                                     color="primary"
                                     href="https://pxblue.github.io" // TODO: change to a valid link
                                 >
-                                    development roadmap
+                                    Development Roadmap
                                 </Button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <footer className={classes.footer}>Copyright 2020 Eaton. Licensed under BSD-3-Clause.</footer>
+                <footer
+                    className={classes.footer}
+                >{`Copyright ${new Date().getFullYear()} Eaton. Licensed under BSD-3-Clause.`}</footer>
                 <Fab
                     color="primary"
                     className={classes.FAB}
@@ -181,6 +184,4 @@ function App(): JSX.Element {
             </div>
         </>
     );
-}
-
-export default App;
+};
