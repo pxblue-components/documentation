@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Typography, Button, Card, CardContent } from '@material-ui/core';
 import * as Colors from '@pxblue/colors';
-import ShortlineDivider from './ShortlineDivider';
+import { ShortlineDivider } from './ShortlineDivider';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -49,8 +49,8 @@ type SimpleCardProps = {
 
 // return the #.#.# version number as a promise
 // return empty string if unsuccessful
-function fetchNpmVersion(packageName: string): Promise<string> {
-    return fetch(`https://api.npms.io/v2/package/${encodeURIComponent(packageName)}`)
+const fetchNpmVersion = (packageName: string): Promise<string> =>
+    fetch(`https://api.npms.io/v2/package/${encodeURIComponent(packageName)}`)
         .then((res) => res.json())
         .then((json) => {
             let version = '-.-.-';
@@ -60,16 +60,22 @@ function fetchNpmVersion(packageName: string): Promise<string> {
                 version = '';
             }
             return version;
+        })
+        .catch((err) => {
+            throw err;
         });
-}
 
-export function SimpleCard(props: SimpleCardProps): JSX.Element {
+export const SimpleCard = (props: SimpleCardProps): JSX.Element => {
     const { title, body, packageName, image, url } = props;
     const theme = useTheme();
     const classes = useStyles(theme);
     const [version, setVersion] = useState('-.-.-');
     useEffect(() => {
-        fetchNpmVersion(packageName).then((_version) => setVersion(_version));
+        fetchNpmVersion(packageName)
+            .then((_version) => setVersion(_version))
+            .catch((err) => {
+                throw err;
+            });
     });
     return (
         <Card className={classes.wrapper}>
@@ -97,4 +103,4 @@ export function SimpleCard(props: SimpleCardProps): JSX.Element {
             </CardContent>
         </Card>
     );
-}
+};
